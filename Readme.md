@@ -2,14 +2,6 @@
 
 A powerful Flask-based web application that generates personalized GenAI learning roadmaps using Google's Gemini Pro LLM. The tool analyzes user profiles, goals, and preferences to create customized learning paths for different personas.
 
-## ✨ Features
-
-- 📋 **Profile Analysis**: Processes resumes (PDF, DOCX, TXT) and interview summaries
-- 🎯 **Persona Classification**: Identifies user type from multiple categories
-- 📊 **Multi-format Output**: Generates roadmaps in JSON, Table, and PDF formats
-- 🔄 **Trace Logging**: Provides reasoning traces for roadmap decisions
-- 🎨 **Modern UI**: Clean, responsive interface with gradient styling
-- 📱 **Mobile-Friendly**: Adapts to different screen sizes
 
 ## 🛠️ Technology Stack
 
@@ -106,16 +98,10 @@ Key configurations are managed through environment variables:
 
 ## 🎥 Demo
 
-Check out our demo video to see GENAI-ROADMAP-1 in action:
+Check out the demo video
 
-[![GENAI-ROADMAP-1 Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+(https://drive.google.com/file/d/1xh1r7cRYzhHEaBu8i4oJ5Y33eZTHyNyG/view?usp=sharing)
 
-> 🎯 The demo shows:
-> - Resume upload and analysis
-> - Persona classification
-> - Roadmap generation
-> - Different output formats
-> - User interface walkthrough
 
 ## 🤝 Contributing
 
