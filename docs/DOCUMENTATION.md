@@ -222,9 +222,6 @@ roadmap = generator.create_roadmap(
 - v1.0.0: Initial release
 - v1.0.1: Bug fixes and performance improvements
 
-### Contributing
-See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
-
 ---
 
 *Last updated: April 17, 2024*
