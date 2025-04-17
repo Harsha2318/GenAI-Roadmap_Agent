@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Roadmap Agent</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 2em; background: linear-gradient(135deg, #f6f8fa 0%, #e3f2fd 100%); }
+        .container { background: #fff; padding: 2em; border-radius: 16px; max-width: 900px; margin: auto; box-shadow: 0 4px 24px #cce3f6; }
+        h1 { color: #0077b6; letter-spacing: 1px; }
+        textarea { width: 100%; min-height: 70px; margin-bottom: 1em; border-radius: 7px; border: 1px solid #bbb; padding: 0.5em; font-size: 1em; }
+        label { font-weight: bold; }
+        .result, .output-section { background: #f1f8ff; padding: 1.5em; margin-top: 2em; border-radius: 12px; box-shadow: 0 2px 8px #e0e0e0; }
+        pre { background: #222; color: #eee; padding: 1em; border-radius: 8px; overflow-x: auto; font-size: 1em; }
+        .error { color: #c00; margin-top: 1em; }
+        .btn, .download-btn { background: #0077b6; color: #fff; padding: 0.7em 2em; border: none; border-radius: 7px; font-size: 1em; cursor: pointer; transition: background 0.2s; margin-top: 1em; margin-right: 1em; }
+        .btn:disabled, .download-btn:disabled { background: #bbb; }
+        .btn:hover, .download-btn:hover { background: #023e8a; }
+        .pdf-link { margin-top: 1em; display: inline-block; background: #43aa8b; color: #fff; padding: 0.5em 1.2em; border-radius: 7px; text-decoration: none; }
+        .json-card, .table-card { background: #fff; border-radius: 10px; box-shadow: 0 1px 6px #e3e3e3; padding: 1em; margin-bottom: 1.5em; }
+        .styled-table { border-collapse: collapse; width: 100%; margin-top: 1em; }
+        .styled-table th, .styled-table td { border: 1px solid #b3c6e0; padding: 0.7em 1em; text-align: left; }
+        .styled-table th { background: #caf0f8; color: #023e8a; }
+        .styled-table tr:nth-child(even) { background: #f8fafd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Personalized GenAI Roadmap Agent</h1>
+        <form method="post" enctype="multipart/form-data">
+            <label for="resume_text">Resume Text (optional):</label><br>
+            <textarea id="resume_text" name="resume_text" placeholder="Paste your resume here..."></textarea><br>
+            <label for="resume_file">Or Upload Resume File (PDF, DOCX, TXT):</label><br>
+            <input type="file" id="resume_file" name="resume_file" accept=".pdf,.docx,.txt"><br>
+            <label for="interview_summary_text">45-min Interview Summary:</label><br>
+            <textarea id="interview_summary_text" name="interview_summary_text" required placeholder="Paste your interview summary here..."></textarea><br>
+            <label for="goals_text">Personal Goals:</label><br>
+            <textarea id="goals_text" name="goals_text" required placeholder="Describe your GenAI learning goals..."></textarea><br>
+            {% if reportlab %}
+            <label><input type="checkbox" name="generate_pdf"> Export as PDF</label><br>
+            {% endif %}
+            <button class="btn" type="submit">Generate Roadmap</button>
+        </form>
+        <div id="loading-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(255,255,255,0.75);z-index:1000;justify-content:center;align-items:center;">
+            <div style="text-align:center;">
+                <div style="border:6px solid #f3f3f3;border-top:6px solid #0077b6;border-radius:50%;width:48px;height:48px;animation:spin 1s linear infinite;margin:auto;"></div>
+                <div style="margin-top:1em;font-size:1.2em;color:#023e8a;font-weight:bold;">Generating your roadmap...</div>
+            </div>
+        </div>
+        <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        });
+        window.onload = function() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        };
+        </script>
+        <style>@keyframes spin {0% {transform:rotate(0deg);}100% {transform:rotate(360deg);}}</style>
+
+        {% if error %}
+            <div class="error"><strong>Error:</strong> {{ error }}</div>
+        {% endif %}
+
+        {% if result %}
+        <div class="result">
+            <h2>Reasoning Trace</h2>
+            {% if result.reasoning_trace %}
+                <pre>{{ result.reasoning_trace }}</pre>
+            {% else %}
+                <ul>
+                    <li><b>Understand:</b> User profile, skills, goals, preferences extracted from your input.</li>
+                    <li><b>Plan:</b> Persona classified, relevant topics and roadmap structure created for you.</li>
+                    <li><b>Reflect:</b> Justifications for every topic, activity, and structure are included in the output.</li>
+                    <li><b>Deliver:</b> All results shown below and available as PDF.</li>
+                </ul>
+            {% endif %}
+            <div class="output-section">
+                <h2>Roadmap (JSON)</h2>
+                <pre>{{ result.json }}</pre>
+                <a class="btn download-btn" href="/download_json">Download JSON</a>
+                <h2>Roadmap (Table)</h2>
+                <pre>{{ result.table }}</pre>
+                <a class="btn download-btn" href="/download_csv">Download Table (CSV)</a>
+                {% if result.pdf %}
+                <a class="pdf-link" href="/download_pdf?pdf_path={{ result.pdf }}" target="_blank">Download PDF</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
